@@ -1,9 +1,11 @@
 ---
 layout: home
 title: 2025年度研究会資料
+header:
+  image: "/image/home.png"
 ---
 
-## 標準ベイズ統計学　Peter D. Hoff
+## 標準ベイズ統計学 - Peter D. Hoff
 ### [5月9日](0509.html)
 - 演習問題 2.6
 - 演習問題 3.6
