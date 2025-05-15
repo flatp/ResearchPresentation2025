@@ -1,4 +1,14 @@
 ---
 layout: default
-title: My Markdown Site
+title: index
 ---
+
+2025年度研究会資料
+
+## 標準ベイズ統計学　Peter D. Hoff
+### [5月9日](0509.html)
+- 演習問題 2.6
+- 演習問題 3.6
+- 演習問題 3.12
+### [5月15日](0515.html)
+- 演習問題 4.3
