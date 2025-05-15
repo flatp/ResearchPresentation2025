@@ -1,8 +1,7 @@
 ---
 layout: home
-title: Home
+title: 2025年度研究会資料
 ---
-2025年度研究会資料
 
 ## 標準ベイズ統計学　Peter D. Hoff
 ### [5月9日](0509.html)
