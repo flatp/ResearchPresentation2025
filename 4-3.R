@@ -1,0 +1,76 @@
+library(MCMCpack)
+library(ggplot2)
+set.seed(1234)
+
+y_A <- c(12, 9, 12, 14, 13, 13, 15, 8, 15, 6)
+y_B <- c(11, 11, 10, 9, 9, 8, 7, 10, 6, 8, 8, 9, 7)
+
+avg_A <- mean(y_A)
+sd_A <- sd(y_A)
+avg_sd_A <- avg_A / sd_A
+
+avg_B <- mean(y_B)
+sd_B <- sd(y_B)
+avg_sd_B <- avg_B / sd_B
+
+n_A <- length(y_A)
+sy_A <- sum(y_A)
+n_B <- length(y_B)
+sy_B <- sum(y_B)
+
+a0_A <- 120
+b0_A <- 10
+a0_B <- 12
+b0_B <- 1
+
+shape_A <- a0_A + sy_A
+rate_A <- b0_A + n_A
+shape_B <- a0_B + sy_B
+rate_B <- b0_B + n_B
+
+n_mc <- 10000
+n_new <- 10
+ta_mc <- numeric(n_mc)
+tb_mc <- numeric(n_mc)
+
+# モンテカルロシミュレーション
+for (s in 1:n_mc) {
+  theta_A <- rgamma(1, shape=shape_A, rate=rate_A)
+  y_A_mc <- rpois(n_new, lambda=theta_A)
+  avga <- mean(y_A_mc)
+  sda <- sd(y_A_mc)
+  ta_mc[s] <- avga / sda
+  theta_B <- rgamma(1, shape=shape_B, rate=rate_B)
+  y_B_mc <- rpois(n_new, lambda=theta_B)
+  avgb <- mean(y_B_mc)
+  sdb <- sd(y_B_mc)
+  tb_mc[s] <- avgb / sdb
+}
+
+df1 <- data.frame(ta_mc = ta_mc)
+df2 <- data.frame(tb_mc = tb_mc)
+
+p1 <- ggplot(df1, aes(x = ta_mc)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = "skyblue", alpha = 0.6, color = "white") +
+  geom_vline(aes(xintercept = avg_sd_A), color = "red", linetype = "dashed", size = 1) +
+  labs(
+    title = "A群",
+    x = "平均 / 標準偏差",
+    y = "密度"
+  ) +
+  theme_minimal() +
+  annotate("text", x = avg_sd_A + 0.1, y = 0.3, label = paste("平均/SD =", round(avg_sd_A, 2)), color = "red")
+
+p2 <- ggplot(df2, aes(x = tb_mc)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = "skyblue", alpha = 0.6, color = "white") +
+  geom_vline(aes(xintercept = avg_sd_B), color = "red", linetype = "dashed", size = 1) +
+  labs(
+    title = "B群",
+    x = "平均 / 標準偏差",
+    y = "密度"
+  ) +
+  theme_minimal() +
+  annotate("text", x = avg_sd_B + 0.1, y = 0.3, label = paste("平均/SD =", round(avg_sd_B, 2)), color = "red")
+
+print(p1)
+print(p2)
